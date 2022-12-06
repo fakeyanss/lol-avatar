@@ -1,0 +1,51 @@
+name: 'Sync LoL avator'
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '2 20 * * 0' # at Sunday 04:02
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout codes'
+        uses: actions/checkout@v1
+
+      # - name: Set up Python
+        # uses: actions/setup-python@v1
+        # with:
+          # python-version: 3.6
+
+      # - name: Configure pip cache
+      #   uses: actions/cache@v1
+      #   id: pip-cache
+      #   with:
+      #     path: venv
+      #     key: pip-1-${{ hashFiles('**/requirements.txt') }}
+      #     restore-keys: |
+      #       pip-
+
+      # - name: Install dependencies
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install -r build/requirements.txt
+      #   if: steps.pip-cache.outputs.cache-hit != 'true'
+
+
+      - name: Sync avator images
+        run: bash sync.sh 
+
+
+      - name: commit
+        run: |
+          git config --global user.email bot
+          git config --global user.name bot
+          git add .
+          git commit -m "auto sync by bot@github" -a
+        continue-on-error: true
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN}}
+        continue-on-error: true
