@@ -3,7 +3,7 @@ name: 'Sync LoL avator'
 on:
   workflow_dispatch:
   schedule:
-    - cron: '2 20 * * 0' # at Sunday 04:02
+    - cron: '2 20 1 */1 *' # at Sunday 04:02
 
 jobs:
   bot:
